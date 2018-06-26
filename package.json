@@ -1,6 +1,6 @@
 {
 	"name": "sequelize-templates",
-	"version": "0.4.29",
+	"version": "0.1.0",
 	"description": "Automatically generate templates from your database schema.",
 	"main": "index",
 	"keywords": [
