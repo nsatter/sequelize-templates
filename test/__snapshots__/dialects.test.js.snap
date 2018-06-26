@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[MYSQL] sequelize-auto dialects getForeignKeysQuery mssql 1`] = `
+"SELECT
+      ccu.table_name AS source_table,
+      ccu.constraint_name AS constraint_name,
+      ccu.column_name AS source_column,
+      kcu.table_name AS target_table,
+      kcu.column_name AS target_column,
+      tc.constraint_type AS constraint_type,
+      c.is_identity AS is_identity
+    FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
+    INNER JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE ccu
+      ON ccu.CONSTRAINT_NAME = tc.CONSTRAINT_NAME
+    LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc
+      ON ccu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
+    LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
+      ON kcu.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME AND tc.CONSTRAINT_TYPE = 'FOREIGN KEY'
+    INNER JOIN sys.COLUMNS c
+      ON c.name = ccu.column_name
+      AND c.object_id = OBJECT_ID(ccu.table_name)
+    WHERE ccu.table_name = 'mytable'"
+`;
+
+exports[`[MYSQL] sequelize-auto dialects getForeignKeysQuery mysql 1`] = `
+"SELECT
+        K.CONSTRAINT_NAME as constraint_name
+      , K.CONSTRAINT_SCHEMA as source_schema
+      , K.TABLE_SCHEMA as source_table
+      , K.COLUMN_NAME as source_column
+      , K.REFERENCED_TABLE_SCHEMA AS target_schema
+      , K.REFERENCED_TABLE_NAME AS target_table
+      , K.REFERENCED_COLUMN_NAME AS target_column
+      , C.extra
+      , C.COLUMN_KEY AS column_key
+      FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS K
+      LEFT JOIN INFORMATION_SCHEMA.COLUMNS AS C
+        ON C.TABLE_NAME = K.TABLE_NAME AND C.COLUMN_NAME = K.COLUMN_NAME
+      WHERE
+        K.TABLE_NAME = 'mytable' AND K.CONSTRAINT_SCHEMA = 'mydatabase';"
+`;
+
+exports[`[MYSQL] sequelize-auto dialects getForeignKeysQuery postgres 1`] = `
+"SELECT
+      o.conname AS constraint_name,
+      (SELECT nspname FROM pg_namespace WHERE oid=m.relnamespace) AS source_schema,
+      m.relname AS source_table,
+      (SELECT a.attname FROM pg_attribute a WHERE a.attrelid = m.oid AND a.attnum = o.conkey[1] AND a.attisdropped = false) AS source_column,
+      (SELECT nspname FROM pg_namespace WHERE oid=f.relnamespace) AS target_schema,
+      f.relname AS target_table,
+      (SELECT a.attname FROM pg_attribute a WHERE a.attrelid = f.oid AND a.attnum = o.confkey[1] AND a.attisdropped = false) AS target_column,
+      o.contype,
+		(SELECT d.adsrc AS extra FROM pg_catalog.pg_attribute a LEFT JOIN pg_catalog.pg_attrdef d ON (a.attrelid, a.attnum) = (d.adrelid,  d.adnum)
+			 WHERE NOT a.attisdropped AND a.attnum > 0 AND a.attrelid = o.conrelid AND a.attnum = o.conkey[1] LIMIT 1)
+    FROM pg_constraint o
+    LEFT JOIN pg_class c ON c.oid = o.conrelid
+    LEFT JOIN pg_class f ON f.oid = o.confrelid
+    LEFT JOIN pg_class m ON m.oid = o.conrelid
+    WHERE o.conrelid = (SELECT oid FROM pg_class WHERE relname = 'mytable' LIMIT 1)"
+`;
+
+exports[`[MYSQL] sequelize-auto dialects getForeignKeysQuery sqlite 1`] = `"PRAGMA foreign_key_list(mytable);"`;
+
+exports[`[POSTGRES] sequelize-auto dialects getForeignKeysQuery mssql 1`] = `
+"SELECT
+      ccu.table_name AS source_table,
+      ccu.constraint_name AS constraint_name,
+      ccu.column_name AS source_column,
+      kcu.table_name AS target_table,
+      kcu.column_name AS target_column,
+      tc.constraint_type AS constraint_type,
+      c.is_identity AS is_identity
+    FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
+    INNER JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE ccu
+      ON ccu.CONSTRAINT_NAME = tc.CONSTRAINT_NAME
+    LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc
+      ON ccu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
+    LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
+      ON kcu.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME AND tc.CONSTRAINT_TYPE = 'FOREIGN KEY'
+    INNER JOIN sys.COLUMNS c
+      ON c.name = ccu.column_name
+      AND c.object_id = OBJECT_ID(ccu.table_name)
+    WHERE ccu.table_name = 'mytable'"
+`;
+
+exports[`[POSTGRES] sequelize-auto dialects getForeignKeysQuery mysql 1`] = `
+"SELECT
+        K.CONSTRAINT_NAME as constraint_name
+      , K.CONSTRAINT_SCHEMA as source_schema
+      , K.TABLE_SCHEMA as source_table
+      , K.COLUMN_NAME as source_column
+      , K.REFERENCED_TABLE_SCHEMA AS target_schema
+      , K.REFERENCED_TABLE_NAME AS target_table
+      , K.REFERENCED_COLUMN_NAME AS target_column
+      , C.extra
+      , C.COLUMN_KEY AS column_key
+      FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS K
+      LEFT JOIN INFORMATION_SCHEMA.COLUMNS AS C
+        ON C.TABLE_NAME = K.TABLE_NAME AND C.COLUMN_NAME = K.COLUMN_NAME
+      WHERE
+        K.TABLE_NAME = 'mytable' AND K.CONSTRAINT_SCHEMA = 'mydatabase';"
+`;
+
+exports[`[POSTGRES] sequelize-auto dialects getForeignKeysQuery postgres 1`] = `
+"SELECT
+      o.conname AS constraint_name,
+      (SELECT nspname FROM pg_namespace WHERE oid=m.relnamespace) AS source_schema,
+      m.relname AS source_table,
+      (SELECT a.attname FROM pg_attribute a WHERE a.attrelid = m.oid AND a.attnum = o.conkey[1] AND a.attisdropped = false) AS source_column,
+      (SELECT nspname FROM pg_namespace WHERE oid=f.relnamespace) AS target_schema,
+      f.relname AS target_table,
+      (SELECT a.attname FROM pg_attribute a WHERE a.attrelid = f.oid AND a.attnum = o.confkey[1] AND a.attisdropped = false) AS target_column,
+      o.contype,
+		(SELECT d.adsrc AS extra FROM pg_catalog.pg_attribute a LEFT JOIN pg_catalog.pg_attrdef d ON (a.attrelid, a.attnum) = (d.adrelid,  d.adnum)
+			 WHERE NOT a.attisdropped AND a.attnum > 0 AND a.attrelid = o.conrelid AND a.attnum = o.conkey[1] LIMIT 1)
+    FROM pg_constraint o
+    LEFT JOIN pg_class c ON c.oid = o.conrelid
+    LEFT JOIN pg_class f ON f.oid = o.confrelid
+    LEFT JOIN pg_class m ON m.oid = o.conrelid
+    WHERE o.conrelid = (SELECT oid FROM pg_class WHERE relname = 'mytable' LIMIT 1)"
+`;
+
+exports[`[POSTGRES] sequelize-auto dialects getForeignKeysQuery sqlite 1`] = `"PRAGMA foreign_key_list(mytable);"`;

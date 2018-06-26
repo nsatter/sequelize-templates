@@ -1,0 +1,20 @@
+{
+	"env": {
+		"es6": true,
+		"node": true,
+		"jest/globals": true
+	},
+	"parserOptions": {
+		"ecmaVersion": 2017
+	},
+	"extends": "eslint:recommended",
+	"rules": {
+		"indent": [ "error", "tab", { "SwitchCase": 1 } ],
+		"semi": [ "error", "always" ],
+		"no-unused-vars": ["warn", { "args": "none"} ],
+		"no-console": "off",
+		"curly": "error",
+		"complexity": "warn"
+  },
+  "plugins": ["jest"]
+}

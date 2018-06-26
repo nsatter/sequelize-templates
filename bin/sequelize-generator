@@ -1,0 +1,94 @@
+#!/usr/bin/env node
+
+const sequelizeGenerator = require('../');
+const path = require('path');
+const fs = require('fs');
+
+var argv = require('yargs')
+	.usage(`Usage: sequelize-generator <command> [config-file] [options]
+  Where <command> is:
+   g, generate: generate and write the template files
+   s, schema: dump the schema to the console
+   t, templates: dump the generated templates to the console`)
+	.demandCommand()
+	.alias('h', 'host')
+	.alias('d', 'database')
+	.alias('u', 'user')
+	.alias('x', 'password')
+	.alias('p', 'port')
+	.alias('e', 'dialect')
+	.alias('t', 'tables')
+	.alias('T', 'skip-tables')
+	.alias('s', 'schema')
+	.alias('f', 'force')
+	.describe('host', "IP/Hostname for the database Uses 'localhost' by default.")
+	.describe('database', 'Database name.')
+	.describe('user', 'Username for database.')
+	.describe('password', 'Password for database.')
+	.describe('port', 'Port number for database. Will use the default for the dialect.')
+	.describe('dialect', "The dialect/engine that you're using: postgres, mysql, sqlite, mssql (default: postgres)")
+	.describe('tables', 'Comma-separated names of tables to import')
+	.describe('skip-tables', 'Comma-separated names of tables to skip')
+	.describe('schema', 'Database schema from which to retrieve tables')
+	.describe('force', 'Will force overwite all files. USE WITH CAUTION.')
+	.argv;
+
+let config = require('../config.json');
+
+let userConfigFile = path.resolve(process.cwd(), argv._[1] || config.config);
+if (fs.existsSync(userConfigFile)) {
+	let userConfig = require(userConfigFile);
+	config = assignDefined(config, userConfig);
+}
+
+config = assignDefined(config, argv);
+
+config.port = config.port || getDefaultPort(config.dialect);
+
+var generator = new sequelizeGenerator(config);
+
+(async () => {
+	switch(argv._[0]) {
+		case 'generate':
+		case 'g':
+			await generator.run();
+			break;
+		case 'schema':
+		case 's':
+			await generator.getData();
+			console.log(JSON.stringify(generator.data));
+			break;
+		case 'tempalates':
+		case 't':
+			await generator.getData();
+			await generator.buildTemplates();
+			console.log(JSON.stringify(generator.templates));
+			break;
+		default:
+			console.error('Unrecognized command ' + argv._[0]);
+			process.exit(1);
+	}
+})();
+
+function getDefaultPort(dialect) {
+	switch (dialect.toLowerCase()) {
+		case 'mssql':
+			return 1433;
+		case 'postgres':
+			return 5432;
+		default:
+			return 3306;
+	}
+}
+
+function assignDefined(target, ...sources) {
+	for (const source of sources) {
+		for (const key of Object.keys(source)) {
+			const val = source[key];
+			if (val !== undefined) {
+				target[key] = val;
+			}
+		}
+	}
+	return target;
+}

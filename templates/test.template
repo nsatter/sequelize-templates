@@ -1,0 +1,10 @@
+module.exports = function(sequelize, DataTypes) {
+	return {{{props columns}}{{if #index}},{{/if}}
+		{{camel:key}}: {
+			type: DataTypes.{{dataType:prop.type}},{{if prop.primaryKey}}
+			primaryKey: true,{{/if}}{{if prop.defaultValue}}
+			defaultValue: sequelize.fn('{{:prop.defaultValue}}'),{{/if}}
+			allowNull: {{:prop.allowNull}}
+		}{{/props}}
+	};
+};
