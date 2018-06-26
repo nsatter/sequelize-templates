@@ -1,5 +1,5 @@
 {
 	"dialect": "postgres",
 	"host": "locahost",
-	"config": "generator.json"
+	"config": "templates.json"
 }

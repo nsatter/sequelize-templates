@@ -1,4 +1,4 @@
-# Sequelize-Generator
+# Sequelize-Templates
 
 This project was originally forked from sequelize-auto, but uses a template engine to generate the models.
 
@@ -6,9 +6,13 @@ Generating the tempaltes will generate the template(s) for each table found in t
 
 Uses [jsRender](http://www.jsviews.com/#jsrapi) for the template engine.
 
+## Install
+
+`npm install sequelize-templates`
+
 ## Prerequisites
 
-You will need to install the correct dialect binding globally before using sequelize-generator.
+You will need to install the correct dialect binding globally before using sequelize-templates.
 
 Example for MySQL/MariaDB
 
@@ -30,19 +34,19 @@ Example for MSSQL
 
 ## Usage
 
-Sequelize-Generator can be used as a command line utility or can be imported as a node module
+Sequelize-Templates can be used as a command line utility or can be imported as a node module
 
 ### Command Line Example
 
-`sequelize-generator g generator.json --host localhost`
+`sequelize-templates g templates.json --host localhost`
 
-Call `sequelize-generator` with no parameters for the full list of settings
+Call `sequelize-templates` with no parameters for the full list of settings
 
 *All settings can be configured in the config file, but the command line takes priority.*
 
 ## Testing
 
-You must setup a database called `sequelize_generator_test` first, edit the `test/config.js` file accordingly, and then enter in any of the following:
+You must setup a database called `sequelize_templates_test` first, edit the `test/config.js` file accordingly, and then enter in any of the following:
 
     # for all
     npm run test

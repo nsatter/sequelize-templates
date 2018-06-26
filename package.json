@@ -1,5 +1,5 @@
 {
-	"name": "sequelize-generator",
+	"name": "sequelize-templates",
 	"version": "0.4.29",
 	"description": "Automatically generate templates from your database schema.",
 	"main": "index",
@@ -11,14 +11,14 @@
 		"mapper"
 	],
 	"bin": {
-		"sequelize-generator": "bin/sequelize-generator"
+		"sequelize-templates": "bin/sequelize-templates"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/nsatter/sequelize-generator.git"
+		"url": "https://github.com/nsatter/sequelize-templates.git"
 	},
 	"bugs": {
-		"url": "https://github.com/nsatter/sequelize-generator/issues"
+		"url": "https://github.com/nsatter/sequelize-templates/issues"
 	},
 	"nyc": {
 		"exclude": [

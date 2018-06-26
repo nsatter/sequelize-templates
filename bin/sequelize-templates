@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-const sequelizeGenerator = require('../');
+const sequelizeTemplates = require('../');
 const path = require('path');
 const fs = require('fs');
 
 var argv = require('yargs')
-	.usage(`Usage: sequelize-generator <command> [config-file] [options]
+	.usage(`Usage: sequelize-templates <command> [config-file] [options]
   Where <command> is:
    g, generate: generate and write the template files
    s, schema: dump the schema to the console
@@ -45,24 +45,24 @@ config = assignDefined(config, argv);
 
 config.port = config.port || getDefaultPort(config.dialect);
 
-var generator = new sequelizeGenerator(config);
+var templates = new sequelizeTemplates(config);
 
 (async () => {
 	switch(argv._[0]) {
 		case 'generate':
 		case 'g':
-			await generator.run();
+			await templates.run();
 			break;
 		case 'schema':
 		case 's':
-			await generator.getData();
-			console.log(JSON.stringify(generator.data));
+			await templates.getData();
+			console.log(JSON.stringify(templates.data));
 			break;
 		case 'tempalates':
 		case 't':
-			await generator.getData();
-			await generator.buildTemplates();
-			console.log(JSON.stringify(generator.templates));
+			await templates.getData();
+			await templates.buildTemplates();
+			console.log(JSON.stringify(templates.templates));
 			break;
 		default:
 			console.error('Unrecognized command ' + argv._[0]);
