@@ -52,17 +52,17 @@
 		"lodash": "^4.17.10",
 		"mkdirp": "^0.5.1",
 		"pluralize": "^7.0.0",
-		"sequelize": "^3.33.0",
+		"sequelize": "^4.38.0",
 		"yargs": "^8.0.1"
 	},
 	"devDependencies": {
 		"eslint": "^4.3.0",
-		"eslint-plugin-jest": "^21.17.0",
+		"eslint-plugin-jest": "^21.18.0",
 		"jest": "^22.4.4",
-		"mysql": "^2.13.0",
+		"mysql": "^2.16.0",
 		"nyc": "^11.9.0",
 		"pg": "^6.1.5",
 		"pg-hstore": "^2.3.2",
-		"sqlite3": "^3.1.8"
+		"sqlite3": "^4.0.2"
 	}
 }
